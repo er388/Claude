@@ -1,20 +1,24 @@
 <html>
 <body>
-    <script src="https://js.puter.com/v2/"></script>
     <script>
-        (async () => {
-            const userPrompt = prompt("Enter the prompt to send to the model:", "Write a detailed essay on the impact of artificial intelligence on society");
-            if (userPrompt === null) return;
-
+        // Ζητάμε μόνο το prompt του χρήστη (χωρίς προεπιλεγμένο κείμενο)
+        const userPrompt = prompt("Εισάγετε το prompt που θα σταλεί στο μοντέλο:");
+        if (!userPrompt) throw new Error("Prompt cancelled");
+        
+        // Φορτώνουμε το puter script δυναμικά και εκτελούμε την κλήση μόνο αφού φορτώσει
+        const s = document.createElement('script');
+        s.src = "https://js.puter.com/v2/";
+        s.onload = async () => {
             const response = await puter.ai.chat(
-                userPrompt, 
+                userPrompt,
                 {model: 'claude-sonnet-4-5', stream: true}
             );
             
             for await (const part of response) {
                 puter.print(part?.text);
             }
-        })();
+        };
+        document.head.appendChild(s);
     </script>
 </body>
 </html>
