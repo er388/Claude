@@ -1,0 +1,24 @@
+<html>
+<body>
+    <script>
+        // Ζητάμε μόνο το prompt του χρήστη (χωρίς προεπιλεγμένο κείμενο)
+        const userPrompt = prompt("Εισάγετε το prompt που θα σταλεί στο μοντέλο:");
+        if (!userPrompt) throw new Error("Prompt cancelled");
+        
+        // Φορτώνουμε το puter script δυναμικά και εκτελούμε την κλήση μόνο αφού φορτώσει
+        const s = document.createElement('script');
+        s.src = "https://js.puter.com/v2/";
+        s.onload = async () => {
+            const response = await puter.ai.chat(
+                userPrompt,
+                {model: 'claude-opus-4-1', stream: true}
+            );
+            
+            for await (const part of response) {
+                puter.print(part?.text);
+            }
+        };
+        document.head.appendChild(s);
+    </script>
+</body>
+</html>
