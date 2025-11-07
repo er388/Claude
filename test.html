@@ -3,8 +3,11 @@
     <script src="https://js.puter.com/v2/"></script>
     <script>
         (async () => {
+            const userPrompt = prompt("Enter the prompt to send to the model:", "Write a detailed essay on the impact of artificial intelligence on society");
+            if (userPrompt === null) return;
+
             const response = await puter.ai.chat(
-                "Write a detailed essay on the impact of artificial intelligence on society", 
+                userPrompt, 
                 {model: 'claude-sonnet-4-5', stream: true}
             );
             
